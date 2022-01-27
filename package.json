@@ -1,0 +1,30 @@
+{
+  "name": "sdc-alkaline-overview",
+  "version": "1.0.0",
+  "description": "Work space for HR SDC project",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest --detectOpenHandles --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rpp32-sdc-alkaline/SDC-Alkaline-Overview.git"
+  },
+  "author": "Rob Stafford",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rpp32-sdc-alkaline/SDC-Alkaline-Overview/issues"
+  },
+  "homepage": "https://github.com/rpp32-sdc-alkaline/SDC-Alkaline-Overview#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.16.8",
+    "@babel/core": "^7.16.12",
+    "@babel/preset-env": "^7.16.11",
+    "jest": "^27.4.7",
+    "webpack": "^5.67.0",
+    "webpack-cli": "^4.9.2"
+  }
+}
