@@ -1,6 +1,6 @@
-// const express = require('express');
-// const app = express();
-// const port = 3001;
+const express = require('express');
+const app = express();
+const port = 3001;
 const path = require('path');
 const multer  = require('multer');
 //const upload = multer({ dest: 'uploads/' });
@@ -395,6 +395,6 @@ function runFinalBuild() {
 //uncomment line below to build products file to populate db.
 //runFinalBuild();
 
-// app.listen(port, () => {
-//   console.log(`SDC server listening on http://localhost:${port}`)
-// })
+app.listen(port, () => {
+  console.log(`SDC server listening on http://localhost:${port}`)
+})
