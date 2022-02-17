@@ -7,7 +7,7 @@ mongoose.connect('mongodb://localhost/products', {
 
 const ProductSchema = mongoose.Schema({
 
-  //_id: { type: Number, unique: true },
+  id: Number,
   name: String,
   slogan: String,
   description: String,
@@ -23,19 +23,56 @@ const ProductSchema = mongoose.Schema({
   }
 });
 
-let Product = mongoose.model('product', ProductSchema);
+const StyleSchema = mongoose.Schema({
 
-let retrieveById = (id, callback) => {
-  let query = Product.findById(id);
-  query.exec((error, products) => {
+  id: Number,
+  productId: Number,
+  name: String,
+  sale_price: Number,
+  original_price: Number,
+  default_style: String,
+  photos: {
+    type: Array,
+    default: undefined
+  },
+  skus: {
+    type: Object,
+    default: undefined
+  }
+});
+
+let Product = mongoose.model('product', ProductSchema, 'products');
+let Style = mongoose.model('style', StyleSchema, 'styles');
+
+async function retrieveProductById(incomingId, callback) {
+
+  const query  = Product.where({ id: incomingId });
+  query.findOne(function (error, product) {
     if (error) {
+      console.log('db error: ', error);
       callback(error);
-    } else {
-      callback(null, products);
     }
-  })
+    if (product) {
+      callback(null, product);
+    }
+  });
+}
+
+async function retrieveStylesById(incomingId, callback) {
+
+  const query  = Style.where({ productId: incomingId });
+  query.find(function (error, styles) {
+    if (error) {
+      console.log('db error: ', error);
+      callback(error);
+    }
+    if (styles) {
+      callback(null, styles);
+    }
+  });
 }
 
 module.exports = {
-  retrieveById,
+  retrieveProductById,
+  retrieveStylesById
 }
