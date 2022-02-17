@@ -16,7 +16,7 @@ const { retrieveById } = require('.././database/index.js');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(__dirname + '/../public/dist'));
+//app.use(express.static(__dirname + '/../public/dist'));
 const filePath = (path.join(__dirname, '/data'));
 
 let mainList = [];
@@ -229,7 +229,7 @@ async function importProduct() {
   const instream = fs.createReadStream(newFilePath);
   const outstream = new stream();
   const rl = readline.createInterface(instream, outstream);
-  const keyList = ['_id', 'name', 'slogan', 'description', 'category', 'default_price', 'features'];
+  const keyList = ['id', 'name', 'slogan', 'description', 'category', 'default_price', 'features'];
 
   return new Promise((resolve, reject) => {
     let lineCount = 0;
@@ -305,11 +305,11 @@ async function addFeaturesToProducts() {
     do {
       let workingSet = mainList.splice(0, 100000);
       tempSet = resultSet;
-      let loopStart = featureList.findIndex(({product_id}) => product_id === workingSet[0]._id) || 0;
+      let loopStart = featureList.findIndex(({product_id}) => product_id === workingSet[0].id) || 0;
       console.log({loopStart});
 
       for (let i = loopStart; i < featureList.length; i++) {
-        let target = workingSet.find(({_id}) => _id === featureList[i].product_id);
+        let target = workingSet.find(({id}) => id === featureList[i].product_id);
         if (target) {
           let currentFeatures = featureList[i];
           target.features.push(currentFeatures);
@@ -393,7 +393,7 @@ function runFinalBuild() {
 //runAllStyleStuff();
 
 //uncomment line below to build products file to populate db.
-//runFinalBuild();
+runFinalBuild();
 
 app.listen(port, () => {
   console.log(`SDC server listening on http://localhost:${port}`)
