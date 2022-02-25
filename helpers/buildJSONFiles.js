@@ -3,20 +3,17 @@ const app = express();
 const port = 3001;
 const path = require('path');
 const multer  = require('multer');
-//const upload = multer({ dest: 'uploads/' });
-//const bodyParser = require('body-parser');
 const axios = require('axios');
 const fs = require('fs');
 const readline = require('readline');
 const stream = require('stream');
+const $ = require('jquery');
+const csv = require('jquery-csv');
 
-//this code originally lived in server, but most isn't needed there.
-
-const { retrieveById } = require('.././database/index.js');
+//this code originally lived in server, but most isn't needed there (& some isn't needed here).
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-//app.use(express.static(__dirname + '/../public/dist'));
 const filePath = (path.join(__dirname, '/data'));
 
 let mainList = [];
@@ -40,14 +37,15 @@ async function importStyles() {
       lineCount++;
       if (lineCount > 1) {
         let currentRecord = new Object;
+        let currentLine = csv.toArray(line);
         for (let i = 0; i < 8; i++) {
           if (i === 2 || i === 5) {
-            currentRecord[keyList[i]] = line.split(',')[i];
+            currentRecord[keyList[i]] = currentLine[i];
           } else if (i < 2 || i === 3 || i === 4) {
-            if (line.split(',')[i] === 'null') {
-              currentRecord[keyList[i]] = line.split(',')[i];
+            if (currentLine[i] === 'null') {
+              currentRecord[keyList[i]] = currentLine[i];
             } else {
-              currentRecord[keyList[i]] = parseInt(line.split(',')[i]);
+              currentRecord[keyList[i]] = parseInt(currentLine[i]);
             }
           } else if (i === 6) {
             currentRecord['photos'] = new Array;
@@ -83,11 +81,12 @@ async function importPhotos(styleList) {
       lineCount++;
       if (lineCount > 1) {
         let currentRecord = new Object;
+        let currentLine = csv.toArray(line);
         for (let i = 0; i < 4; i++) {
           if (i < 2) {
-            currentRecord[keyList[i]] = parseInt(line.split(',')[i]);
+            currentRecord[keyList[i]] = parseInt(currentLine[i]);
           } else {
-            currentRecord[keyList[i]] = line.split(',')[i];
+            currentRecord[keyList[i]] = currentLine[i];
           }
         }
         photoList.push(currentRecord);
@@ -118,11 +117,12 @@ async function importSkus() {
       lineCount++;
       if (lineCount > 1) {
         let currentRecord = new Object;
+        let currentLine = csv.toArray(line);
         for (let i = 0; i < 4; i++) {
           if (i < 2 || i === 3) {
-            currentRecord[keyList[i]] = parseInt(line.split(',')[i]);
+            currentRecord[keyList[i]] = parseInt(currentLine[i]);
           } else {
-            currentRecord[keyList[i]] = line.split(',')[i];
+            currentRecord[keyList[i]] = currentLine[i];
           }
         }
         skuList.push(currentRecord);
@@ -175,9 +175,6 @@ async function addSkusToStyles() {
   photoList = null;
 
   return new Promise((resolve, reject) => {
-
-    //let workingSet = [];
-    //let tempSet = [];
 
     let fileToWrite = path.join(filePath, '../.././data/finalStyleList.json');
     let writerStream = fs.createWriteStream(fileToWrite);
@@ -239,11 +236,14 @@ async function importProduct() {
       lineCount++;
       if (lineCount > 1) {
         let currentRecord = new Object;
+        let currentLine = csv.toArray(line);
+
         for (let i = 0; i < 7; i++) {
+
           if (i > 0 && i < 5) {
-            currentRecord[keyList[i]] = line.split(',')[i];
+            currentRecord[keyList[i]] = currentLine[i];
           } else if (i < 1 || i === 5) {
-            currentRecord[keyList[i]] = parseInt(line.split(',')[i]);
+            currentRecord[keyList[i]] = parseInt(currentLine[i]);
           } else if (i > 5) {
             currentRecord['features'] = new Array;
             currentRecord['styles'] = new Array;
@@ -277,11 +277,12 @@ async function importFeatures() {
       lineCount++;
       if (lineCount > 1) {
         let currentFeature = new Object;
+        let currentLine = csv.toArray(line);
         for (let i = 1; i < 4; i++) {
           if (i === 1) {
-            currentFeature[keyList[i]] = parseInt(line.split(',')[i]);
+            currentFeature[keyList[i]] = parseInt(currentLine[i]);
           } else {
-            currentFeature[keyList[i]] = line.split(',')[i];
+            currentFeature[keyList[i]] = currentLine[i];
           }
         }
         featureList.push(currentFeature);
@@ -390,11 +391,7 @@ function runFinalBuild() {
 }
 
 //uncomment below line to build style file to populate db.
-//runAllStyleStuff();
+runAllStyleStuff();
 
 //uncomment line below to build products file to populate db.
-runFinalBuild();
-
-// app.listen(port, () => {
-//   console.log(`SDC server listening on http://localhost:${port}`)
-// })
+//runFinalBuild();
