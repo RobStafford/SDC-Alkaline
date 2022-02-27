@@ -394,4 +394,6 @@ function runFinalBuild() {
 runAllStyleStuff();
 
 //uncomment line below to build products file to populate db.
+
 //runFinalBuild();
+
