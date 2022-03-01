@@ -1,9 +1,10 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost/products', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
 
 const ProductSchema = mongoose.Schema({
 
@@ -44,7 +45,7 @@ const StyleSchema = mongoose.Schema({
 let Product = mongoose.model('product', ProductSchema, 'products');
 let Style = mongoose.model('style', StyleSchema, 'styles');
 
-async function retrieveProductById(incomingId, callback) {
+function retrieveProductById(incomingId, callback) {
 
   const query  = Product.where({ id: incomingId });
   query.findOne(function (error, product) {
@@ -58,7 +59,7 @@ async function retrieveProductById(incomingId, callback) {
   });
 }
 
-async function retrieveStylesById(incomingId, callback) {
+function retrieveStylesById(incomingId, callback) {
 
   const query  = Style.where({ productId: incomingId });
   query.find(function (error, styles) {
@@ -76,3 +77,4 @@ module.exports = {
   retrieveProductById,
   retrieveStylesById
 }
+
