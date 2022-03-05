@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+//.env file here for connection
 mongoose.connect('mongodb://localhost/products', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -45,6 +45,32 @@ const StyleSchema = mongoose.Schema({
 let Product = mongoose.model('product', ProductSchema, 'products');
 let Style = mongoose.model('style', StyleSchema, 'styles');
 
+function retrieve5Products(callback) {
+  const query  = Product.where({ id: { $in: [900002, 900003, 900004, 900005, 900006 ] } });
+  query.find(function (error, products) {
+    if (error) {
+      console.log('db error: ', error);
+      callback(error);
+    }
+    if (products) {
+      callback(null, products);
+    }
+  });
+}
+
+function retrieve5Styles(callback) {
+  const query  = Style.where({ productId: { $in: [900002, 900003, 900004, 900005, 900006 ] } });
+  query.find(function (error, products) {
+    if (error) {
+      console.log('db error: ', error);
+      callback(error);
+    }
+    if (products) {
+      callback(null, products);
+    }
+  });
+}
+
 function retrieveProductById(incomingId, callback) {
 
   const query  = Product.where({ id: incomingId });
@@ -75,6 +101,8 @@ function retrieveStylesById(incomingId, callback) {
 
 module.exports = {
   retrieveProductById,
-  retrieveStylesById
+  retrieveStylesById,
+  retrieve5Products,
+  retrieve5Styles
 }
 

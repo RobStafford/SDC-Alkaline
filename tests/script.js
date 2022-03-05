@@ -13,7 +13,7 @@ let getRandomSKUId = function(min = 900000, max = 1000000) {
 
 export const options = {
   //use 'vus' to set the number of simultaneous virtual users
-  vus: 100,
+  vus: 200,
   duration: '30s',
 };
 
