@@ -1,4 +1,5 @@
 const express = require('express');
+require('newrelic');
 const app = express();
 //const port = 3001;
 const path = require('path');
@@ -9,6 +10,8 @@ const path = require('path');
 // const stream = require('stream');
 
 const { retrieveProductById, retrieveStylesById, retrieve5Products, retrieve5Styles } = require('.././database/index.js');
+
+//const { main } = require('.././database/index.js');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

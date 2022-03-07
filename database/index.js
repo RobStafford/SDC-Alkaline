@@ -1,10 +1,19 @@
+require ('dotenv').config()
 const mongoose = require('mongoose');
-//.env file here for connection
-mongoose.connect('mongodb://localhost/products', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
 
+main().catch(err => console.log(err));
+
+async function main() {
+
+  await mongoose.connect('mongodb://54.162.10.85:27017/products', {
+    authSource: "admin",
+    user: "myUserAdmin",
+    pass: process.env.DB_PASS,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+
+}
 
 const ProductSchema = mongoose.Schema({
 
