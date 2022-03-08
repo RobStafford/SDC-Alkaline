@@ -5,7 +5,7 @@ main().catch(err => console.log(err));
 
 async function main() {
 
-  await mongoose.connect('mongodb://54.162.10.85:27017/products', {
+  await mongoose.connect('mongodb://3.212.15.225:27017/products', {
     authSource: "admin",
     user: "myUserAdmin",
     pass: process.env.DB_PASS,
